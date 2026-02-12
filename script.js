@@ -671,7 +671,7 @@ function typeNextCharacter() {
 
   if (state.typewriter.index >= state.typewriter.text.length) {
     state.typewriter.running = false;
-    el.letterCapybara.classList.remove("hidden");
+    appendCapybaraToLetter();
     return;
   }
 
@@ -690,6 +690,17 @@ function skipTypewriter() {
   stopTypewriter();
   el.letterOutput.textContent = state.typewriter.text;
   el.letterOutput.scrollTop = 0;
+  appendCapybaraToLetter();
+}
+
+function appendCapybaraToLetter() {
+  if (!el.letterCapybara) {
+    return;
+  }
+  if (el.letterCapybara.parentElement !== el.letterOutput) {
+    el.letterOutput.append(document.createTextNode("\n\n"));
+    el.letterOutput.append(el.letterCapybara);
+  }
   el.letterCapybara.classList.remove("hidden");
 }
 
