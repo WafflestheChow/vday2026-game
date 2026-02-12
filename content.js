@@ -44,6 +44,7 @@ export const LOTTIE_ASSETS = {
   win: "/assets/lottie/win.json",
   introBunnies: "/assets/lottie/cutie-bunnies-love.lottie",
   winBunnies: "/assets/lottie/cutie-bunnies-love.lottie",
+  birdDelivery: "/assets/lottie/flappy-bird-delivering-message.lottie",
   globalHeartsBg: "/assets/lottie/hearts-background.lottie",
   letterHeartsBg: "/assets/lottie/hearts-background.lottie",
   letterBunnies: "/assets/lottie/cutie-bunnies-love.lottie",

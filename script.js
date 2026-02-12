@@ -41,6 +41,7 @@ const el = {
   skipModalBody: document.getElementById("skip-modal-body"),
   skipConfirmYes: document.getElementById("skip-confirm-yes"),
   skipConfirmNo: document.getElementById("skip-confirm-no"),
+  deliveryOverlay: document.getElementById("delivery-overlay"),
   debugControls: document.getElementById("debug-controls"),
   debugLetterBtn: document.getElementById("debug-letter-btn"),
 };
@@ -67,6 +68,7 @@ const state = {
     text: "",
   },
   letterRevealTimers: [],
+  deliveryTimer: null,
   reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 
@@ -171,6 +173,7 @@ function initLottie() {
   loadLottie("intro-lottie", LOTTIE_ASSETS.introBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.intro, true);
   loadLottie("win-lottie", LOTTIE_ASSETS.winBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.win, true);
   loadLottie("global-hearts-bg-lottie", LOTTIE_ASSETS.globalHeartsBg || LOTTIE_ASSETS.letterHeartsBg, true);
+  loadLottie("delivery-lottie", LOTTIE_ASSETS.birdDelivery, true);
 }
 
 function loadLottie(containerId, path, loop) {
@@ -270,6 +273,7 @@ function resizeCanvas() {
 }
 
 function startRound() {
+  cancelDeliverySequence();
   clearLetterRevealTimers();
   stopTypewriter();
   state.roundToken += 1;
@@ -488,17 +492,52 @@ function cancelSkipConfirm() {
 }
 
 function goToLetter() {
-  stopRound();
-  el.skipModal.classList.add("hidden");
-  goToScene("letter");
-  playLetterReveal();
+  beginLetterFlow(true);
 }
 
 function openLetterFromDebug() {
   if (!DEBUG_MODE) {
     return;
   }
-  goToLetter();
+  beginLetterFlow(false);
+}
+
+function beginLetterFlow(withDeliveryCutscene) {
+  stopRound();
+  el.skipModal.classList.add("hidden");
+  resetLetterScene();
+  cancelDeliverySequence();
+
+  if (!withDeliveryCutscene) {
+    goToScene("letter");
+    playLetterReveal();
+    return;
+  }
+
+  showDeliveryOverlay();
+  const waitMs = state.reducedMotion ? 420 : 2300;
+  state.deliveryTimer = window.setTimeout(() => {
+    state.deliveryTimer = null;
+    hideDeliveryOverlay();
+    goToScene("letter");
+    playLetterReveal();
+  }, waitMs);
+}
+
+function showDeliveryOverlay() {
+  el.deliveryOverlay.classList.remove("hidden");
+}
+
+function hideDeliveryOverlay() {
+  el.deliveryOverlay.classList.add("hidden");
+}
+
+function cancelDeliverySequence() {
+  if (state.deliveryTimer) {
+    clearTimeout(state.deliveryTimer);
+    state.deliveryTimer = null;
+  }
+  hideDeliveryOverlay();
 }
 
 function playLetterReveal() {
@@ -617,6 +656,7 @@ function getTypeDelay(char) {
 }
 
 function resetExperience() {
+  cancelDeliverySequence();
   resetLetterScene();
   stopRound();
   state.score = 0;
