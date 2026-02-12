@@ -34,6 +34,7 @@ const el = {
   dodgeMessage: document.getElementById("dodge-message"),
   letterStage: document.getElementById("letter-stage"),
   letterOutput: document.getElementById("letter-output"),
+  letterCapybara: document.getElementById("letter-capybara"),
   skipTypingBtn: document.getElementById("skip-typing-btn"),
   replayBtn: document.getElementById("replay-btn"),
   skipModal: document.getElementById("skip-modal"),
@@ -658,6 +659,7 @@ function startTypewriter() {
   state.typewriter.running = true;
   el.letterOutput.textContent = "";
   el.letterOutput.scrollTop = 0;
+  el.letterCapybara.classList.add("hidden");
 
   typeNextCharacter();
 }
@@ -669,6 +671,7 @@ function typeNextCharacter() {
 
   if (state.typewriter.index >= state.typewriter.text.length) {
     state.typewriter.running = false;
+    el.letterCapybara.classList.remove("hidden");
     return;
   }
 
@@ -687,6 +690,7 @@ function skipTypewriter() {
   stopTypewriter();
   el.letterOutput.textContent = state.typewriter.text;
   el.letterOutput.scrollTop = 0;
+  el.letterCapybara.classList.remove("hidden");
 }
 
 function stopTypewriter() {
@@ -709,6 +713,7 @@ function resetLetterScene() {
   el.skipTypingBtn.disabled = true;
   el.letterOutput.textContent = "";
   el.letterOutput.scrollTop = 0;
+  el.letterCapybara.classList.add("hidden");
   el.letterStage.classList.remove("phase-envelope", "phase-slide", "phase-read", "phase-typing");
 }
 
