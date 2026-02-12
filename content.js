@@ -28,11 +28,11 @@ export const APP_COPY = {
 export const LETTER = {
   greeting: "Dear 루라,",
   paragraphs: [
-    "발렌타인데이야 💕\n항상 내 곁에 있어줘서 고마워.\n너랑 함께하는 매일이 나한테는 선물이야. 사랑해.",
+    "너를 처음 만난 날부터 지금까지, 내 하루는 항상 너로 가득해.\n네 웃음은 내 세상을 환하게 밝혀 주고, 네 목소리는 내 마음을 가장 편안하게 만들어 줘.\n항상 내 곁에 있어 줘서 고맙고, 나를 사랑해 줘서 고마워.\n오늘은 발렌타인데이지만, 나는 매일매일 너를 사랑해.\n앞으로도 지금처럼 서로 아끼고, 웃으면서 오래오래 함께하자.\n사랑해, 정말 많이.",
   ],
-  signoff: "From, \nNick",
-  signature: "",
-  dateLine: "February 14th, 2026",
+  signoff: "2026년 2월 14일",
+  signature: "from Nick",
+  dateLine: "",
 };
 
 export const LOTTIE_ASSETS = {

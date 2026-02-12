@@ -314,7 +314,7 @@ p {
 
 .letter-stage {
   position: relative;
-  height: clamp(320px, 56vh, 500px);
+  height: clamp(340px, 60vh, 560px);
   margin-top: 10px;
   overflow: visible;
   isolation: isolate;
@@ -323,9 +323,9 @@ p {
 .envelope {
   position: absolute;
   left: 50%;
-  top: 70%;
-  width: clamp(280px, 42vw, 420px);
-  height: clamp(210px, 31vw, 310px);
+  top: 69%;
+  width: clamp(340px, 48vw, 520px);
+  height: clamp(250px, 36vw, 380px);
   transform: translate(-50%, -50%) rotate(-2deg) scale(1);
   transition: transform 860ms cubic-bezier(0.22, 1, 0.36, 1), opacity 580ms ease;
   border-radius: 12px;
@@ -366,8 +366,8 @@ p {
 }
 
 .letter-stage.phase-read .envelope {
-  transform: translate(-168%, 16%) rotate(-8deg) scale(0.56);
-  opacity: 0.78;
+  transform: translate(-154%, 18%) rotate(-8deg) scale(0.5);
+  opacity: 0.72;
 }
 
 .letter-stage.phase-read .letter-sheet {
@@ -515,17 +515,17 @@ p {
   }
 
   .letter-stage {
-    height: clamp(300px, 56vh, 440px);
+    height: clamp(320px, 60vh, 470px);
   }
 
   .envelope {
-    top: 72%;
-    width: clamp(190px, 48vw, 260px);
-    height: clamp(140px, 34vw, 190px);
+    top: 70%;
+    width: clamp(240px, 62vw, 320px);
+    height: clamp(170px, 44vw, 230px);
   }
 
   .letter-stage.phase-read .envelope {
-    transform: translate(-140%, 20%) rotate(-7deg) scale(0.54);
+    transform: translate(-122%, 24%) rotate(-7deg) scale(0.46);
   }
 
   .modal-actions {

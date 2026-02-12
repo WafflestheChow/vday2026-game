@@ -588,13 +588,13 @@ function playLetterReveal() {
 
   const slideTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-slide");
-  }, 1320);
+  }, 1600);
 
   const settleTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-read");
-  }, 2240);
+  }, 2860);
 
-  const typingTimer = window.setTimeout(startTyping, 2480);
+  const typingTimer = window.setTimeout(startTyping, 3920);
   state.letterRevealTimers.push(slideTimer, settleTimer, typingTimer);
 }
 
