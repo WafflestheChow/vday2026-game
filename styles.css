@@ -25,7 +25,8 @@ body {
   background: radial-gradient(circle at 20% 10%, #ffe6ef 0%, transparent 40%),
     radial-gradient(circle at 80% 90%, #ffd8e5 0%, transparent 45%),
     linear-gradient(160deg, var(--bg-1), var(--bg-2));
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .app-shell {
@@ -301,8 +302,9 @@ p {
 
 .letter-stage {
   position: relative;
-  min-height: min(52vh, 420px);
+  height: clamp(260px, 49vh, 420px);
   margin-top: 8px;
+  padding: 12px;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(231, 79, 120, 0.22);
@@ -312,28 +314,29 @@ p {
 .envelope {
   position: absolute;
   left: 50%;
-  top: 57%;
-  width: min(380px, 84vw);
-  aspect-ratio: 4 / 3;
+  top: 58%;
+  width: clamp(210px, 42vw, 320px);
+  height: clamp(150px, 27vw, 230px);
   translate: -50% -50%;
+  perspective: 1000px;
+  transform-style: preserve-3d;
   transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1), scale 760ms ease, rotate 760ms ease;
 }
 
 .envelope-back {
   position: absolute;
   inset: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   background: linear-gradient(160deg, #f0a3bd, #e97ea1);
+  z-index: 1;
 }
 
 .envelope-front {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 64%;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  inset: 0;
+  clip-path: polygon(0 100%, 0 44%, 50% 76%, 100% 44%, 100% 100%);
   background: linear-gradient(180deg, #ec8cae, #df6e95);
+  z-index: 4;
 }
 
 .envelope-flap {
@@ -343,9 +346,11 @@ p {
   top: 0;
   height: 56%;
   transform-origin: top center;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 92%);
   background: linear-gradient(180deg, #f5b3c8, #eb91b1);
   transition: transform 540ms ease;
+  backface-visibility: hidden;
+  z-index: 5;
 }
 
 .envelope-seal {
@@ -362,20 +367,22 @@ p {
   font-size: 18px;
   background: linear-gradient(180deg, #e96f96, #cd4f75);
   box-shadow: 0 8px 12px rgba(147, 49, 84, 0.26);
+  z-index: 6;
 }
 
 .letter-sheet {
   position: absolute;
   left: 50%;
-  top: 58%;
-  width: min(460px, 90vw);
-  height: min(48vh, 350px);
-  translate: -50% 72%;
+  top: 12px;
+  width: min(440px, calc(100% - 24px));
+  height: calc(100% - 24px);
+  translate: -50% 78%;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(227, 151, 175, 0.52);
   box-shadow: 0 18px 26px rgba(164, 58, 90, 0.2);
   transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 3;
 }
 
 .letter-stage.is-opening .envelope-flap {
@@ -383,23 +390,25 @@ p {
 }
 
 .letter-stage.is-opening .letter-sheet {
-  translate: -50% -6%;
+  translate: -50% 4%;
 }
 
 .letter-stage.is-revealed .envelope {
-  translate: -120% -64%;
-  scale: 0.78;
+  translate: -150% -56%;
+  scale: 0.72;
   rotate: -8deg;
 }
 
 .letter-stage.is-revealed .letter-sheet {
-  translate: -12% -12%;
+  translate: -8% 0;
 }
 
 .letter-output {
   height: 100%;
   padding: 16px;
   border-radius: 14px;
+  font-size: clamp(1rem, 1.2vw, 1.06rem);
+  line-height: 1.55;
   white-space: pre-wrap;
   overflow: auto;
   background-image: linear-gradient(to bottom, rgba(255, 241, 245, 0.34) 1px, transparent 1px);
@@ -501,16 +510,16 @@ p {
   }
 
   .letter-stage {
-    min-height: min(56vh, 420px);
+    height: clamp(300px, 56vh, 440px);
   }
 
   .letter-stage.is-revealed .envelope {
-    translate: -98% -70%;
-    scale: 0.72;
+    translate: -118% -62%;
+    scale: 0.68;
   }
 
   .letter-stage.is-revealed .letter-sheet {
-    translate: -4% -8%;
+    translate: -3% 0;
   }
 
   .modal-actions {
