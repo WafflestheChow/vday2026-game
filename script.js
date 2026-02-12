@@ -75,9 +75,15 @@ const state = {
 const ctx = el.canvas.getContext("2d");
 const lottieInstances = new Map();
 const HEART_TIERS = [
-  { points: 1, chance: 0.62, size: [12, 18], speed: [118, 185], color: "#e74f78" },
-  { points: 2, chance: 0.28, size: [18, 24], speed: [96, 155], color: "#ef6ca5" },
-  { points: 3, chance: 0.1, size: [24, 30], speed: [82, 132], color: "#f2b451" },
+  { points: 50, chance: 0.01, size: [34, 44], speed: [58, 104], color: "#f2b451" },
+  { points: 25, chance: 0.015, size: [30, 39], speed: [66, 114], color: "#f29d38" },
+  { points: 20, chance: 0.02, size: [28, 36], speed: [72, 122], color: "#f07f56" },
+  { points: 10, chance: 0.05, size: [24, 32], speed: [80, 138], color: "#ef6ca5" },
+  { points: 5, chance: 0.1, size: [20, 28], speed: [90, 150], color: "#ea5a90" },
+  { points: 4, chance: 0.11, size: [18, 25], speed: [96, 160], color: "#e75184" },
+  { points: 3, chance: 0.14, size: [16, 23], speed: [106, 172], color: "#e74f78" },
+  { points: 2, chance: 0.205, size: [13, 19], speed: [118, 188], color: "#e85682" },
+  { points: 1, chance: 0.35, size: [10, 16], speed: [130, 210], color: "#eb6e96" },
 ];
 
 function initApp() {
@@ -175,17 +181,17 @@ function initLottie() {
   loadLottie("win-lottie", LOTTIE_ASSETS.winBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.win, true);
   loadLottie("global-hearts-bg-lottie", LOTTIE_ASSETS.globalHeartsBg || LOTTIE_ASSETS.letterHeartsBg, true);
   loadLottie("delivery-lottie", LOTTIE_ASSETS.birdDelivery, true);
-  loadLottie("letter-envelope-lottie", LOTTIE_ASSETS.envelopeOpen, false);
+  loadLottie("letter-envelope-lottie", LOTTIE_ASSETS.envelopeOpen, false, false);
 }
 
-function loadLottie(containerId, path, loop) {
+function loadLottie(containerId, path, loop, autoplay = true) {
   const container = document.getElementById(containerId);
   if (!container || !path) {
     return;
   }
 
   if (path.toLowerCase().endsWith(".lottie")) {
-    loadDotLottie(containerId, container, path, loop);
+    loadDotLottie(containerId, container, path, loop, autoplay);
     return;
   }
 
@@ -198,7 +204,7 @@ function loadLottie(containerId, path, loop) {
       container,
       renderer: "svg",
       loop,
-      autoplay: true,
+      autoplay,
       path,
     });
     lottieInstances.set(containerId, animation);
@@ -207,12 +213,14 @@ function loadLottie(containerId, path, loop) {
   }
 }
 
-function loadDotLottie(containerId, container, path, loop) {
+function loadDotLottie(containerId, container, path, loop, autoplay) {
   const mount = () => {
     container.replaceChildren();
     const player = document.createElement("dotlottie-player");
     player.setAttribute("src", path);
-    player.setAttribute("autoplay", "");
+    if (autoplay) {
+      player.setAttribute("autoplay", "");
+    }
     if (loop) {
       player.setAttribute("loop", "");
     }
@@ -442,7 +450,7 @@ function drawHeart(x, y, size, color, points) {
     ctx.fillStyle = "#fff";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = `700 ${Math.max(10, size * 0.68)}px "Avenir Next", "Trebuchet MS", sans-serif`;
+    ctx.font = `700 ${Math.max(9, size * 0.52)}px "Avenir Next", "Trebuchet MS", sans-serif`;
     ctx.fillText(String(points), 0, size * 0.64);
   }
   ctx.restore();
@@ -586,6 +594,10 @@ function playLetterReveal() {
     return;
   }
 
+  const envelopeKickTimer = window.setTimeout(() => {
+    restartLottie("letter-envelope-lottie");
+  }, 140);
+
   const slideTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-slide");
   }, 1600);
@@ -594,8 +606,8 @@ function playLetterReveal() {
     el.letterStage.classList.add("phase-read");
   }, 2860);
 
-  const typingTimer = window.setTimeout(startTyping, 3920);
-  state.letterRevealTimers.push(slideTimer, settleTimer, typingTimer);
+  const typingTimer = window.setTimeout(startTyping, 4600);
+  state.letterRevealTimers.push(envelopeKickTimer, slideTimer, settleTimer, typingTimer);
 }
 
 function startTypewriter() {
@@ -721,7 +733,7 @@ function moveCatcherToPointer(clientX) {
 }
 
 function clampCatcher(width) {
-  const margin = 30;
+  const margin = 66;
   state.catcherX = Math.max(margin, Math.min(width - margin, state.catcherX));
 }
 
@@ -730,8 +742,8 @@ function syncCatcherPosition() {
 }
 
 function getCatcherRect(areaRect) {
-  const catcherWidth = 84;
-  const catcherHeight = 44;
+  const catcherWidth = 132;
+  const catcherHeight = 70;
   return {
     left: state.catcherX - catcherWidth / 2,
     right: state.catcherX + catcherWidth / 2,
