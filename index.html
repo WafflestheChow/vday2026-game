@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart Catch - Valentine</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambient-hearts" aria-hidden="true"></div>
+
+    <main id="app" class="app-shell">
+      <section id="scene-loading" class="scene active" aria-live="polite">
+        <div class="panel loading-panel">
+          <div id="loading-lottie" class="lottie-slot" aria-hidden="true"></div>
+          <h1>Preparing something sweet...</h1>
+          <p id="loading-status">Gathering our little memories</p>
+          <div class="loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <span id="loading-bar-fill"></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene-intro" class="scene" aria-labelledby="intro-title">
+        <div class="panel intro-panel">
+          <div id="intro-lottie" class="lottie-slot" aria-hidden="true"></div>
+          <h1 id="intro-title"></h1>
+          <p id="intro-subtitle"></p>
+          <button id="start-btn" class="btn btn-primary" type="button"></button>
+        </div>
+      </section>
+
+      <section id="scene-game" class="scene" aria-labelledby="game-title">
+        <div class="panel game-panel">
+          <h2 id="game-title">Heart Catch</h2>
+          <div class="hud" aria-live="polite">
+            <p>Time: <span id="hud-time">45</span>s</p>
+            <p>Score: <span id="hud-score">0</span></p>
+            <p>Target: <span id="hud-target">20</span></p>
+          </div>
+          <div id="game-area" class="game-area">
+            <canvas id="game-canvas" aria-label="Catch falling hearts"></canvas>
+            <div id="catcher" class="catcher" aria-hidden="true">🤲</div>
+          </div>
+          <p class="hint">Desktop: use arrow keys. Mobile/tablet: drag to move.</p>
+        </div>
+      </section>
+
+      <section id="scene-win" class="scene" aria-labelledby="win-title">
+        <div class="panel win-panel">
+          <div id="win-lottie" class="lottie-slot" aria-hidden="true"></div>
+          <h2 id="win-title"></h2>
+          <p id="win-copy"></p>
+          <button id="to-letter-btn" class="btn btn-primary" type="button">Open Letter</button>
+        </div>
+      </section>
+
+      <section id="scene-lose" class="scene" aria-labelledby="lose-title">
+        <div class="panel lose-panel">
+          <h2 id="lose-title"></h2>
+          <p id="lose-copy"></p>
+          <div class="lose-actions" id="skip-arena">
+            <button id="retry-btn" class="btn btn-primary" type="button">Try Again</button>
+            <button id="skip-btn" class="btn btn-secondary" type="button">Skip to Letter</button>
+          </div>
+          <p id="dodge-message" class="dodge-message" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="scene-letter" class="scene" aria-labelledby="letter-title">
+        <div class="panel letter-panel">
+          <h2 id="letter-title">For You</h2>
+          <article id="letter-output" class="letter-output" aria-live="polite"></article>
+          <div class="letter-actions">
+            <button id="skip-typing-btn" class="btn btn-secondary" type="button">Skip Typing</button>
+            <button id="replay-btn" class="btn btn-primary" type="button">Replay</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="skip-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="skip-modal-title">
+      <div class="modal-card">
+        <h3 id="skip-modal-title"></h3>
+        <p id="skip-modal-body"></p>
+        <div class="modal-actions">
+          <button id="skip-confirm-yes" class="btn btn-secondary" type="button">Yes, skip</button>
+          <button id="skip-confirm-no" class="btn btn-primary" type="button">No, I'll try again</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js" defer></script>
+    <script type="module" src="/script.js"></script>
+  </body>
+</html>
