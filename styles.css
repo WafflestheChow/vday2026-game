@@ -320,33 +320,6 @@ p {
   isolation: isolate;
 }
 
-.bunny-window {
-  position: absolute;
-  top: 18px;
-  left: -16px;
-  width: clamp(120px, 20vw, 170px);
-  height: clamp(92px, 15vw, 126px);
-  z-index: 5;
-  border-radius: 14px;
-  border: 1px solid rgba(231, 79, 120, 0.28);
-  background: rgba(255, 255, 255, 0.62);
-  box-shadow: 0 10px 20px rgba(164, 58, 90, 0.16);
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-8px) scale(0.96);
-  transition: opacity 320ms ease, transform 420ms ease;
-}
-
-.letter-stage.phase-read .bunny-window {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.letter-bunny-lottie {
-  width: 100%;
-  height: 100%;
-}
-
 .envelope {
   position: absolute;
   left: 50%;
@@ -561,13 +534,6 @@ p {
 
   .letter-stage.phase-read .envelope {
     transform: translate(-170%, 16%) rotate(-10deg) scale(0.64);
-  }
-
-  .bunny-window {
-    width: 110px;
-    height: 82px;
-    left: -10px;
-    top: 16px;
   }
 
   .modal-actions {

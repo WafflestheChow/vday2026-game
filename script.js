@@ -168,10 +168,9 @@ function setDebugMode() {
 
 function initLottie() {
   loadLottie("loading-lottie", LOTTIE_ASSETS.loading, true);
-  loadLottie("intro-lottie", LOTTIE_ASSETS.intro, true);
-  loadLottie("win-lottie", LOTTIE_ASSETS.win, false);
+  loadLottie("intro-lottie", LOTTIE_ASSETS.introBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.intro, true);
+  loadLottie("win-lottie", LOTTIE_ASSETS.winBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.win, true);
   loadLottie("global-hearts-bg-lottie", LOTTIE_ASSETS.globalHeartsBg || LOTTIE_ASSETS.letterHeartsBg, true);
-  loadLottie("letter-bunny-lottie", LOTTIE_ASSETS.letterBunnies, true);
 }
 
 function loadLottie(containerId, path, loop) {
