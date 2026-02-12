@@ -30,9 +30,9 @@ export const LETTER = {
   paragraphs: [
     "발렌타인데이야 💕\n항상 내 곁에 있어줘서 고마워.\n너랑 함께하는 매일이 나한테는 선물이야. 사랑해.",
   ],
-  signoff: "from Nick",
+  signoff: "From, \nNick",
   signature: "",
-  dateLine: "",
+  dateLine: "February 14th, 2026",
 };
 
 export const LOTTIE_ASSETS = {
