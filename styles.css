@@ -191,6 +191,8 @@ p {
   overflow: hidden;
   border: 2px solid rgba(231, 79, 120, 0.24);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.85));
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 #game-canvas {
@@ -380,7 +382,19 @@ p {
   opacity: 0.62;
 }
 
+.letter-stage.phase-typing .envelope {
+  transform: translate(-128%, 22%) rotate(-7deg) scale(0.4);
+  opacity: 0;
+}
+
 .letter-stage.phase-read .letter-sheet {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.letter-stage.phase-typing .letter-sheet {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;

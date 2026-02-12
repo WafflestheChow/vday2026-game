@@ -1,7 +1,7 @@
 export const GAME_CONFIG = {
   roundSeconds: 45,
-  targetScore: 1000,
-  spawnMsRange: [450, 900],
+  targetScore: 500,
+  spawnMsRange: [180, 420],
   skipDodgeCount: 5,
   catcherSpeed: 460,
 };

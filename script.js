@@ -132,12 +132,17 @@ function bindEvents() {
   el.skipTypingBtn.addEventListener("click", skipTypewriter);
 
   el.gameArea.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") {
+      event.preventDefault();
+    }
     state.pointerActive = true;
-    el.gameArea.setPointerCapture(event.pointerId);
     moveCatcherToPointer(event.clientX);
   });
 
   el.gameArea.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "touch") {
+      event.preventDefault();
+    }
     if (!state.pointerActive) {
       return;
     }
@@ -149,6 +154,32 @@ function bindEvents() {
   });
 
   el.gameArea.addEventListener("pointercancel", () => {
+    state.pointerActive = false;
+  });
+
+  el.gameArea.addEventListener("pointerleave", () => {
+    state.pointerActive = false;
+  });
+
+  const handleTouchDrag = (event) => {
+    if (!state.inRound) {
+      return;
+    }
+    const touch = event.touches[0];
+    if (!touch) {
+      return;
+    }
+    event.preventDefault();
+    state.pointerActive = true;
+    moveCatcherToPointer(touch.clientX);
+  };
+
+  el.gameArea.addEventListener("touchstart", handleTouchDrag, { passive: false });
+  el.gameArea.addEventListener("touchmove", handleTouchDrag, { passive: false });
+  el.gameArea.addEventListener("touchend", () => {
+    state.pointerActive = false;
+  });
+  el.gameArea.addEventListener("touchcancel", () => {
     state.pointerActive = false;
   });
 
@@ -583,6 +614,7 @@ function playLetterReveal() {
   el.letterStage.classList.add("phase-envelope");
 
   const startTyping = () => {
+    el.letterStage.classList.add("phase-typing");
     el.skipTypingBtn.hidden = false;
     el.skipTypingBtn.disabled = false;
     startTypewriter();
@@ -600,13 +632,13 @@ function playLetterReveal() {
 
   const slideTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-slide");
-  }, 1600);
+  }, 1900);
 
   const settleTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-read");
-  }, 2860);
+  }, 3600);
 
-  const typingTimer = window.setTimeout(startTyping, 4600);
+  const typingTimer = window.setTimeout(startTyping, 6200);
   state.letterRevealTimers.push(envelopeKickTimer, slideTimer, settleTimer, typingTimer);
 }
 
@@ -677,7 +709,7 @@ function resetLetterScene() {
   el.skipTypingBtn.disabled = true;
   el.letterOutput.textContent = "";
   el.letterOutput.scrollTop = 0;
-  el.letterStage.classList.remove("phase-envelope", "phase-slide", "phase-read");
+  el.letterStage.classList.remove("phase-envelope", "phase-slide", "phase-read", "phase-typing");
 }
 
 function getTypeDelay(char) {
