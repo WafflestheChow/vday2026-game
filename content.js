@@ -26,15 +26,13 @@ export const APP_COPY = {
 };
 
 export const LETTER = {
-  greeting: "Hi my love,",
+  greeting: "Dear 루라,",
   paragraphs: [
-    "Thank you for making ordinary days feel warm and bright. Being with you still feels like my favorite kind of magic.",
-    "I keep replaying our little moments in my head, and they all remind me how lucky I am to love you.",
-    "No matter how busy life gets, I choose you every time. Today and always.",
+    "발렌타인데이야 💕\n항상 내 곁에 있어줘서 고마워.\n너랑 함께하는 매일이 나한테는 선물이야. 사랑해.",
   ],
-  signoff: "Happy Valentine's Day",
-  signature: "Love,\n[Your Name]",
-  dateLine: "February 14, 2026",
+  signoff: "from Nick",
+  signature: "",
+  dateLine: "",
 };
 
 export const LOTTIE_ASSETS = {

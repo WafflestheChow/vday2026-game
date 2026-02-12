@@ -588,13 +588,13 @@ function playLetterReveal() {
 
   const slideTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-slide");
-  }, 620);
+  }, 1320);
 
   const settleTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-read");
-  }, 1520);
+  }, 2240);
 
-  const typingTimer = window.setTimeout(startTyping, 1760);
+  const typingTimer = window.setTimeout(startTyping, 2480);
   state.letterRevealTimers.push(slideTimer, settleTimer, typingTimer);
 }
 
@@ -603,13 +603,11 @@ function startTypewriter() {
 
   const chunks = [
     LETTER.greeting,
-    "",
     ...LETTER.paragraphs,
-    "",
     LETTER.signoff,
     LETTER.signature,
     LETTER.dateLine,
-  ];
+  ].filter((part) => typeof part === "string" && part.trim().length > 0);
 
   state.typewriter.text = chunks.join("\n\n");
   state.typewriter.index = 0;
