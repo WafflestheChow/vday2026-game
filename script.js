@@ -73,6 +73,7 @@ const state = {
 };
 
 const ctx = el.canvas.getContext("2d");
+const lottieInstances = new Map();
 const HEART_TIERS = [
   { points: 1, chance: 0.62, size: [12, 18], speed: [118, 185], color: "#e74f78" },
   { points: 2, chance: 0.28, size: [18, 24], speed: [96, 155], color: "#ef6ca5" },
@@ -174,6 +175,7 @@ function initLottie() {
   loadLottie("win-lottie", LOTTIE_ASSETS.winBunnies || LOTTIE_ASSETS.letterBunnies || LOTTIE_ASSETS.win, true);
   loadLottie("global-hearts-bg-lottie", LOTTIE_ASSETS.globalHeartsBg || LOTTIE_ASSETS.letterHeartsBg, true);
   loadLottie("delivery-lottie", LOTTIE_ASSETS.birdDelivery, true);
+  loadLottie("letter-envelope-lottie", LOTTIE_ASSETS.envelopeOpen, false);
 }
 
 function loadLottie(containerId, path, loop) {
@@ -183,7 +185,7 @@ function loadLottie(containerId, path, loop) {
   }
 
   if (path.toLowerCase().endsWith(".lottie")) {
-    loadDotLottie(container, path, loop);
+    loadDotLottie(containerId, container, path, loop);
     return;
   }
 
@@ -192,19 +194,20 @@ function loadLottie(containerId, path, loop) {
   }
 
   try {
-    window.lottie.loadAnimation({
+    const animation = window.lottie.loadAnimation({
       container,
       renderer: "svg",
       loop,
       autoplay: true,
       path,
     });
+    lottieInstances.set(containerId, animation);
   } catch (_error) {
     // Fallback is no-op. The rest of the scene still works.
   }
 }
 
-function loadDotLottie(container, path, loop) {
+function loadDotLottie(containerId, container, path, loop) {
   const mount = () => {
     container.replaceChildren();
     const player = document.createElement("dotlottie-player");
@@ -216,6 +219,7 @@ function loadDotLottie(container, path, loop) {
     player.style.width = "100%";
     player.style.height = "100%";
     container.appendChild(player);
+    lottieInstances.set(containerId, player);
   };
 
   if (window.customElements && window.customElements.get("dotlottie-player")) {
@@ -225,6 +229,30 @@ function loadDotLottie(container, path, loop) {
 
   if (window.customElements && window.customElements.whenDefined) {
     window.customElements.whenDefined("dotlottie-player").then(mount).catch(() => {});
+  }
+}
+
+function restartLottie(containerId) {
+  const instance = lottieInstances.get(containerId);
+  if (!instance) {
+    return;
+  }
+
+  try {
+    if (typeof instance.stop === "function") {
+      instance.stop();
+    }
+    if (typeof instance.goToAndStop === "function") {
+      instance.goToAndStop(0, true);
+    }
+    if (typeof instance.seek === "function") {
+      instance.seek(0);
+    }
+    if (typeof instance.play === "function") {
+      instance.play();
+    }
+  } catch (_error) {
+    // If a player API differs, we keep existing playback behavior.
   }
 }
 
@@ -525,6 +553,7 @@ function beginLetterFlow(withDeliveryCutscene) {
 }
 
 function showDeliveryOverlay() {
+  restartLottie("delivery-lottie");
   el.deliveryOverlay.classList.remove("hidden");
 }
 
@@ -542,6 +571,8 @@ function cancelDeliverySequence() {
 
 function playLetterReveal() {
   resetLetterScene();
+  restartLottie("letter-envelope-lottie");
+  el.letterStage.classList.add("phase-envelope");
 
   const startTyping = () => {
     el.skipTypingBtn.hidden = false;
@@ -557,13 +588,13 @@ function playLetterReveal() {
 
   const slideTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-slide");
-  }, 220);
+  }, 620);
 
   const settleTimer = window.setTimeout(() => {
     el.letterStage.classList.add("phase-read");
-  }, 1180);
+  }, 1520);
 
-  const typingTimer = window.setTimeout(startTyping, 1420);
+  const typingTimer = window.setTimeout(startTyping, 1760);
   state.letterRevealTimers.push(slideTimer, settleTimer, typingTimer);
 }
 
@@ -636,7 +667,7 @@ function resetLetterScene() {
   el.skipTypingBtn.disabled = true;
   el.letterOutput.textContent = "";
   el.letterOutput.scrollTop = 0;
-  el.letterStage.classList.remove("phase-slide", "phase-read");
+  el.letterStage.classList.remove("phase-envelope", "phase-slide", "phase-read");
 }
 
 function getTypeDelay(char) {

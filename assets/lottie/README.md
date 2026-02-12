@@ -7,6 +7,7 @@ Suggested file names:
 - hearts-background.lottie
 - cutie-bunnies-love.lottie
 - flappy-bird-delivering-message.lottie
+- open-envelope.lottie
 
 The app is configured to load these via:
 - /assets/lottie/loading.json
@@ -15,5 +16,6 @@ The app is configured to load these via:
 - /assets/lottie/hearts-background.lottie
 - /assets/lottie/cutie-bunnies-love.lottie
 - /assets/lottie/flappy-bird-delivering-message.lottie
+- /assets/lottie/open-envelope.lottie
 
 If a file is missing, the scene still works without that animation.
