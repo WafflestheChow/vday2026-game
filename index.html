@@ -41,7 +41,12 @@
           </div>
           <div id="game-area" class="game-area">
             <canvas id="game-canvas" aria-label="Catch falling hearts"></canvas>
-            <div id="catcher" class="catcher" aria-hidden="true">🤲</div>
+            <div id="catcher" class="catcher" aria-hidden="true">
+              <span class="bucket bucket-handle"></span>
+              <span class="bucket bucket-rim"></span>
+              <span class="bucket bucket-body"></span>
+              <span class="bucket bucket-mark">❤</span>
+            </div>
           </div>
           <p class="hint">Desktop: use arrow keys. Mobile/tablet: drag to move.</p>
         </div>
@@ -71,7 +76,17 @@
       <section id="scene-letter" class="scene" aria-labelledby="letter-title">
         <div class="panel letter-panel">
           <h2 id="letter-title">For You</h2>
-          <article id="letter-output" class="letter-output" aria-live="polite"></article>
+          <div id="letter-stage" class="letter-stage">
+            <div id="envelope" class="envelope" aria-hidden="true">
+              <div class="envelope-back"></div>
+              <div class="envelope-flap"></div>
+              <div class="envelope-front"></div>
+              <div class="envelope-seal">❤</div>
+            </div>
+            <div id="letter-sheet" class="letter-sheet">
+              <article id="letter-output" class="letter-output" aria-live="polite"></article>
+            </div>
+          </div>
           <div class="letter-actions">
             <button id="skip-typing-btn" class="btn btn-secondary" type="button">Skip Typing</button>
             <button id="replay-btn" class="btn btn-primary" type="button">Replay</button>

@@ -38,8 +38,8 @@ export const LETTER = {
 };
 
 export const LOTTIE_ASSETS = {
-  // Swap these URLs with your favorite Lottie JSON files when you pick assets.
-  loading: "https://assets9.lottiefiles.com/packages/lf20_xlkxtmul.json",
-  intro: "https://assets7.lottiefiles.com/packages/lf20_jbrw3hcz.json",
-  win: "https://assets3.lottiefiles.com/packages/lf20_u4yrau.json",
+  // Put local files in /assets/lottie and keep these names.
+  loading: "/assets/lottie/loading.json",
+  intro: "/assets/lottie/intro.json",
+  win: "/assets/lottie/win.json",
 };

@@ -30,6 +30,7 @@ const el = {
   skipBtn: document.getElementById("skip-btn"),
   skipArena: document.getElementById("skip-arena"),
   dodgeMessage: document.getElementById("dodge-message"),
+  letterStage: document.getElementById("letter-stage"),
   letterOutput: document.getElementById("letter-output"),
   skipTypingBtn: document.getElementById("skip-typing-btn"),
   replayBtn: document.getElementById("replay-btn"),
@@ -61,6 +62,7 @@ const state = {
     index: 0,
     text: "",
   },
+  letterRevealTimers: [],
   reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 
@@ -71,6 +73,7 @@ function initApp() {
   bindEvents();
   resizeCanvas();
   initLottie();
+  resetLetterScene();
   runLoadingSequence();
 }
 
@@ -222,6 +225,8 @@ function resizeCanvas() {
 }
 
 function startRound() {
+  clearLetterRevealTimers();
+  stopTypewriter();
   state.roundToken += 1;
   state.inRound = true;
   state.score = 0;
@@ -396,6 +401,7 @@ function dodgeSkipButton() {
   const left = randomBetween(padding, maxLeft);
   const top = randomBetween(padding, maxTop);
 
+  el.skipBtn.style.translate = "0 0";
   el.skipBtn.style.left = `${left}px`;
   el.skipBtn.style.top = `${top}px`;
   el.skipBtn.classList.remove("dodge-hard");
@@ -404,6 +410,7 @@ function dodgeSkipButton() {
 }
 
 function resetSkipButton() {
+  el.skipBtn.style.translate = "-50% 0";
   el.skipBtn.style.left = "50%";
   el.skipBtn.style.top = "20px";
 }
@@ -421,11 +428,36 @@ function confirmSkipToLetter() {
 function cancelSkipConfirm() {
   el.skipModal.classList.add("hidden");
   goToScene("lose");
+  el.retryBtn.focus();
 }
 
 function goToLetter() {
   goToScene("letter");
-  startTypewriter();
+  playLetterReveal();
+}
+
+function playLetterReveal() {
+  resetLetterScene();
+  el.letterStage.classList.add("is-opening");
+
+  const startTyping = () => {
+    el.skipTypingBtn.hidden = false;
+    el.skipTypingBtn.disabled = false;
+    startTypewriter();
+  };
+
+  if (state.reducedMotion) {
+    el.letterStage.classList.add("is-revealed");
+    startTyping();
+    return;
+  }
+
+  const revealTimer = window.setTimeout(() => {
+    el.letterStage.classList.add("is-revealed");
+  }, 860);
+
+  const typingTimer = window.setTimeout(startTyping, 1500);
+  state.letterRevealTimers.push(revealTimer, typingTimer);
 }
 
 function startTypewriter() {
@@ -483,6 +515,20 @@ function stopTypewriter() {
   }
 }
 
+function clearLetterRevealTimers() {
+  state.letterRevealTimers.forEach((timerId) => clearTimeout(timerId));
+  state.letterRevealTimers = [];
+}
+
+function resetLetterScene() {
+  clearLetterRevealTimers();
+  stopTypewriter();
+  el.skipTypingBtn.hidden = true;
+  el.skipTypingBtn.disabled = true;
+  el.letterOutput.textContent = "";
+  el.letterStage.classList.remove("is-opening", "is-revealed");
+}
+
 function getTypeDelay(char) {
   if (state.reducedMotion) {
     return 5;
@@ -500,7 +546,7 @@ function getTypeDelay(char) {
 }
 
 function resetExperience() {
-  stopTypewriter();
+  resetLetterScene();
   state.roundToken += 1;
   state.inRound = false;
   state.score = 0;
@@ -535,8 +581,8 @@ function syncCatcherPosition() {
 }
 
 function getCatcherRect(areaRect) {
-  const catcherWidth = 70;
-  const catcherHeight = 38;
+  const catcherWidth = 84;
+  const catcherHeight = 44;
   return {
     left: state.catcherX - catcherWidth / 2,
     right: state.catcherX + catcherWidth / 2,
