@@ -75,15 +75,15 @@ const state = {
 const ctx = el.canvas.getContext("2d");
 const lottieInstances = new Map();
 const HEART_TIERS = [
-  { points: 50, chance: 0.01, size: [34, 44], speed: [58, 104], color: "#f2b451" },
-  { points: 25, chance: 0.015, size: [30, 39], speed: [66, 114], color: "#f29d38" },
-  { points: 20, chance: 0.02, size: [28, 36], speed: [72, 122], color: "#f07f56" },
-  { points: 10, chance: 0.05, size: [24, 32], speed: [80, 138], color: "#ef6ca5" },
-  { points: 5, chance: 0.1, size: [20, 28], speed: [90, 150], color: "#ea5a90" },
-  { points: 4, chance: 0.11, size: [18, 25], speed: [96, 160], color: "#e75184" },
+  { points: 50, chance: 0.04, size: [34, 44], speed: [58, 104], color: "#f2b451" },
+  { points: 25, chance: 0.06, size: [30, 39], speed: [66, 114], color: "#f29d38" },
+  { points: 20, chance: 0.05, size: [28, 36], speed: [72, 122], color: "#f07f56" },
+  { points: 10, chance: 0.1, size: [24, 32], speed: [80, 138], color: "#ef6ca5" },
+  { points: 5, chance: 0.14, size: [20, 28], speed: [90, 150], color: "#ea5a90" },
+  { points: 4, chance: 0.13, size: [18, 25], speed: [96, 160], color: "#e75184" },
   { points: 3, chance: 0.14, size: [16, 23], speed: [106, 172], color: "#e74f78" },
-  { points: 2, chance: 0.205, size: [13, 19], speed: [118, 188], color: "#e85682" },
-  { points: 1, chance: 0.35, size: [10, 16], speed: [130, 210], color: "#eb6e96" },
+  { points: 2, chance: 0.16, size: [13, 19], speed: [118, 188], color: "#e85682" },
+  { points: 1, chance: 0.18, size: [10, 16], speed: [130, 210], color: "#eb6e96" },
 ];
 
 function initApp() {
