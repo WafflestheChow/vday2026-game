@@ -71,6 +71,11 @@ const state = {
 };
 
 const ctx = el.canvas.getContext("2d");
+const HEART_TIERS = [
+  { points: 1, chance: 0.62, size: [12, 18], speed: [118, 185], color: "#e74f78" },
+  { points: 2, chance: 0.28, size: [18, 24], speed: [96, 155], color: "#ef6ca5" },
+  { points: 3, chance: 0.1, size: [24, 30], speed: [82, 132], color: "#f2b451" },
+];
 
 function initApp() {
   hydrateCopy();
@@ -314,7 +319,7 @@ function updateGame(deltaMs) {
     heart.y += heart.speed * deltaSeconds;
 
     if (intersectsHeart(catcherRect, heart)) {
-      state.score += 1;
+      state.score += heart.points;
       el.hudScore.textContent = String(state.score);
       pulseCatcher();
       if (state.score >= GAME_CONFIG.targetScore) {
@@ -334,13 +339,16 @@ function updateGame(deltaMs) {
 }
 
 function spawnHeart(areaWidth) {
-  const size = randomBetween(12, 24);
+  const tier = pickHeartTier();
+  const size = randomBetween(tier.size[0], tier.size[1]);
   state.hearts.push({
     x: randomBetween(size + 4, areaWidth - size - 4),
     y: -size,
     size,
-    speed: randomBetween(90, 170),
+    speed: randomBetween(tier.speed[0], tier.speed[1]),
     drift: randomBetween(-16, 16),
+    points: tier.points,
+    color: tier.color,
   });
 }
 
@@ -354,19 +362,27 @@ function drawHearts(width, height) {
   ctx.fillRect(0, 0, width, height);
 
   for (const heart of state.hearts) {
-    drawHeart(heart.x + Math.sin((heart.y / 28) * 0.5) * heart.drift, heart.y, heart.size);
+    const drawX = heart.x + Math.sin((heart.y / 28) * 0.5) * heart.drift;
+    drawHeart(drawX, heart.y, heart.size, heart.color, heart.points);
   }
 }
 
-function drawHeart(x, y, size) {
+function drawHeart(x, y, size, color, points) {
   ctx.save();
   ctx.translate(x, y);
-  ctx.fillStyle = "#e74f78";
+  ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(0, size * 0.35);
   ctx.bezierCurveTo(size * 0.9, -size * 0.35, size * 1.3, size * 0.65, 0, size * 1.35);
   ctx.bezierCurveTo(-size * 1.3, size * 0.65, -size * 0.9, -size * 0.35, 0, size * 0.35);
   ctx.fill();
+  if (points > 1) {
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = `700 ${Math.max(10, size * 0.68)}px "Avenir Next", "Trebuchet MS", sans-serif`;
+    ctx.fillText(String(points), 0, size * 0.64);
+  }
   ctx.restore();
 }
 
@@ -641,6 +657,18 @@ function pulseCatcher() {
 
 function randomBetween(min, max) {
   return Math.random() * (max - min) + min;
+}
+
+function pickHeartTier() {
+  const roll = Math.random();
+  let cursor = 0;
+  for (const tier of HEART_TIERS) {
+    cursor += tier.chance;
+    if (roll <= cursor) {
+      return tier;
+    }
+  }
+  return HEART_TIERS[0];
 }
 
 initApp();

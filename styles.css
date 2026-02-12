@@ -307,6 +307,7 @@ p {
 
 .letter-panel {
   text-align: left;
+  overflow: visible;
 }
 
 .letter-panel h2 {
@@ -315,25 +316,22 @@ p {
 
 .letter-stage {
   position: relative;
-  height: clamp(260px, 49vh, 420px);
+  height: clamp(300px, 52vh, 460px);
   margin-top: 8px;
-  padding: 12px;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid rgba(231, 79, 120, 0.22);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.74));
+  overflow: visible;
 }
 
 .envelope {
   position: absolute;
-  left: 50%;
-  top: 58%;
-  width: clamp(210px, 42vw, 320px);
-  height: clamp(150px, 27vw, 230px);
+  left: 30%;
+  top: 64%;
+  width: clamp(180px, 30vw, 270px);
+  height: clamp(132px, 20vw, 200px);
   translate: -50% -50%;
   perspective: 1000px;
   transform-style: preserve-3d;
-  transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1), scale 760ms ease, rotate 760ms ease;
+  transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1), scale 760ms ease, rotate 760ms ease,
+    opacity 760ms ease;
 }
 
 .envelope-back {
@@ -386,10 +384,10 @@ p {
 .letter-sheet {
   position: absolute;
   left: 50%;
-  top: 12px;
-  width: min(440px, calc(100% - 24px));
-  height: calc(100% - 24px);
-  translate: -50% 78%;
+  top: 14px;
+  width: min(620px, calc(100% - 20px));
+  height: calc(100% - 28px);
+  translate: -50% 86%;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(227, 151, 175, 0.52);
@@ -403,17 +401,18 @@ p {
 }
 
 .letter-stage.is-opening .letter-sheet {
-  translate: -50% 4%;
+  translate: -50% 10%;
 }
 
 .letter-stage.is-revealed .envelope {
-  translate: -150% -56%;
-  scale: 0.72;
-  rotate: -8deg;
+  translate: -168% -60%;
+  scale: 0.64;
+  rotate: -10deg;
+  opacity: 0.88;
 }
 
 .letter-stage.is-revealed .letter-sheet {
-  translate: -8% 0;
+  translate: -50% 0;
 }
 
 .letter-output {
@@ -526,13 +525,16 @@ p {
     height: clamp(300px, 56vh, 440px);
   }
 
-  .letter-stage.is-revealed .envelope {
-    translate: -118% -62%;
-    scale: 0.68;
+  .envelope {
+    left: 28%;
+    top: 63%;
+    width: clamp(140px, 30vw, 180px);
+    height: clamp(102px, 21vw, 136px);
   }
 
-  .letter-stage.is-revealed .letter-sheet {
-    translate: -3% 0;
+  .letter-stage.is-revealed .envelope {
+    translate: -150% -64%;
+    scale: 0.6;
   }
 
   .modal-actions {
