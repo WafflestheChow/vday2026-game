@@ -22,29 +22,27 @@ body {
 body {
   font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 20% 10%, #ffe6ef 0%, transparent 40%),
-    radial-gradient(circle at 80% 90%, #ffd8e5 0%, transparent 45%),
-    linear-gradient(160deg, var(--bg-1), var(--bg-2));
+  background: #f6e7ed;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .app-shell {
   position: relative;
+  z-index: 1;
   min-height: 100dvh;
   width: min(100%, 940px);
   margin: 0 auto;
   padding: 18px;
 }
 
-.ambient-hearts {
+.global-hearts-bg-lottie {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle at 10% 20%, rgba(231, 79, 120, 0.15) 0 8px, transparent 9px),
-    radial-gradient(circle at 85% 75%, rgba(231, 79, 120, 0.14) 0 10px, transparent 11px),
-    radial-gradient(circle at 40% 60%, rgba(255, 148, 178, 0.16) 0 6px, transparent 7px);
-  animation: drift 14s ease-in-out infinite alternate;
+  z-index: 0;
+  opacity: 0.5;
+  filter: saturate(1.05);
 }
 
 .scene {
@@ -322,19 +320,10 @@ p {
   isolation: isolate;
 }
 
-.letter-hearts-bg-lottie {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  opacity: 0.22;
-  pointer-events: none;
-  filter: saturate(1.05);
-}
-
 .bunny-window {
   position: absolute;
-  top: 8px;
-  right: 6px;
+  top: 18px;
+  left: -16px;
   width: clamp(120px, 20vw, 170px);
   height: clamp(92px, 15vw, 126px);
   z-index: 5;
@@ -577,6 +566,8 @@ p {
   .bunny-window {
     width: 110px;
     height: 82px;
+    left: -10px;
+    top: 16px;
   }
 
   .modal-actions {

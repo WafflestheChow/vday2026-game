@@ -170,7 +170,7 @@ function initLottie() {
   loadLottie("loading-lottie", LOTTIE_ASSETS.loading, true);
   loadLottie("intro-lottie", LOTTIE_ASSETS.intro, true);
   loadLottie("win-lottie", LOTTIE_ASSETS.win, false);
-  loadLottie("letter-hearts-bg-lottie", LOTTIE_ASSETS.letterHeartsBg, true);
+  loadLottie("global-hearts-bg-lottie", LOTTIE_ASSETS.globalHeartsBg || LOTTIE_ASSETS.letterHeartsBg, true);
   loadLottie("letter-bunny-lottie", LOTTIE_ASSETS.letterBunnies, true);
 }
 
