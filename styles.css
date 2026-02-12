@@ -132,6 +132,19 @@ p {
   border: 2px solid rgba(231, 79, 120, 0.45);
 }
 
+.debug-controls {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 30;
+}
+
+.debug-controls .btn {
+  padding: 9px 14px;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 20px rgba(164, 58, 90, 0.2);
+}
+
 .loading-bar {
   width: min(420px, 90%);
   height: 12px;

@@ -1,5 +1,7 @@
 import { APP_COPY, GAME_CONFIG, LETTER, LOTTIE_ASSETS } from "./content.js";
 
+const DEBUG_MODE = new URLSearchParams(window.location.search).get("debug") === "1";
+
 const scenes = {
   loading: document.getElementById("scene-loading"),
   intro: document.getElementById("scene-intro"),
@@ -39,6 +41,8 @@ const el = {
   skipModalBody: document.getElementById("skip-modal-body"),
   skipConfirmYes: document.getElementById("skip-confirm-yes"),
   skipConfirmNo: document.getElementById("skip-confirm-no"),
+  debugControls: document.getElementById("debug-controls"),
+  debugLetterBtn: document.getElementById("debug-letter-btn"),
 };
 
 const state = {
@@ -74,6 +78,7 @@ function initApp() {
   resizeCanvas();
   initLottie();
   resetLetterScene();
+  setDebugMode();
   runLoadingSequence();
 }
 
@@ -97,6 +102,7 @@ function bindEvents() {
   el.toLetterBtn.addEventListener("click", () => goToLetter());
   el.retryBtn.addEventListener("click", startRound);
   el.replayBtn.addEventListener("click", resetExperience);
+  el.debugLetterBtn.addEventListener("click", openLetterFromDebug);
 
   el.skipBtn.addEventListener("click", handleSkipAttempt);
   el.skipBtn.addEventListener("keydown", (event) => {
@@ -149,6 +155,10 @@ function bindEvents() {
       state.keys.right = false;
     }
   });
+}
+
+function setDebugMode() {
+  el.debugControls.hidden = !DEBUG_MODE;
 }
 
 function initLottie() {
@@ -432,8 +442,17 @@ function cancelSkipConfirm() {
 }
 
 function goToLetter() {
+  stopRound();
+  el.skipModal.classList.add("hidden");
   goToScene("letter");
   playLetterReveal();
+}
+
+function openLetterFromDebug() {
+  if (!DEBUG_MODE) {
+    return;
+  }
+  goToLetter();
 }
 
 function playLetterReveal() {
@@ -547,8 +566,7 @@ function getTypeDelay(char) {
 
 function resetExperience() {
   resetLetterScene();
-  state.roundToken += 1;
-  state.inRound = false;
+  stopRound();
   state.score = 0;
   state.timeLeft = GAME_CONFIG.roundSeconds;
   state.hearts = [];
@@ -562,6 +580,16 @@ function resetExperience() {
   resetSkipButton();
   el.skipModal.classList.add("hidden");
   goToScene("intro");
+}
+
+function stopRound() {
+  state.roundToken += 1;
+  state.inRound = false;
+  state.pointerActive = false;
+  state.keys.left = false;
+  state.keys.right = false;
+  state.hearts = [];
+  cancelAnimationFrame(state.rafId);
 }
 
 function moveCatcherToPointer(clientX) {
