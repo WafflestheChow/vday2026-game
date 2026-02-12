@@ -418,9 +418,10 @@ p {
 }
 
 .letter-capybara {
-  width: min(240px, 72%);
-  max-height: 160px;
-  object-fit: cover;
+  width: clamp(150px, 24vw, 240px);
+  max-width: calc(100% - 24px);
+  height: auto;
+  object-fit: contain;
   align-self: center;
   margin: 0 0 14px;
   border-radius: 14px;
