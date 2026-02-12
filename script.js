@@ -167,18 +167,25 @@ function setDebugMode() {
 }
 
 function initLottie() {
-  if (!window.lottie) {
-    return;
-  }
-
   loadLottie("loading-lottie", LOTTIE_ASSETS.loading, true);
   loadLottie("intro-lottie", LOTTIE_ASSETS.intro, true);
   loadLottie("win-lottie", LOTTIE_ASSETS.win, false);
+  loadLottie("letter-hearts-bg-lottie", LOTTIE_ASSETS.letterHeartsBg, true);
+  loadLottie("letter-bunny-lottie", LOTTIE_ASSETS.letterBunnies, true);
 }
 
 function loadLottie(containerId, path, loop) {
   const container = document.getElementById(containerId);
-  if (!container || !path || !window.lottie) {
+  if (!container || !path) {
+    return;
+  }
+
+  if (path.toLowerCase().endsWith(".lottie")) {
+    loadDotLottie(container, path, loop);
+    return;
+  }
+
+  if (!window.lottie) {
     return;
   }
 
@@ -192,6 +199,30 @@ function loadLottie(containerId, path, loop) {
     });
   } catch (_error) {
     // Fallback is no-op. The rest of the scene still works.
+  }
+}
+
+function loadDotLottie(container, path, loop) {
+  const mount = () => {
+    container.replaceChildren();
+    const player = document.createElement("dotlottie-player");
+    player.setAttribute("src", path);
+    player.setAttribute("autoplay", "");
+    if (loop) {
+      player.setAttribute("loop", "");
+    }
+    player.style.width = "100%";
+    player.style.height = "100%";
+    container.appendChild(player);
+  };
+
+  if (window.customElements && window.customElements.get("dotlottie-player")) {
+    mount();
+    return;
+  }
+
+  if (window.customElements && window.customElements.whenDefined) {
+    window.customElements.whenDefined("dotlottie-player").then(mount).catch(() => {});
   }
 }
 
@@ -473,7 +504,6 @@ function openLetterFromDebug() {
 
 function playLetterReveal() {
   resetLetterScene();
-  el.letterStage.classList.add("is-opening");
 
   const startTyping = () => {
     el.skipTypingBtn.hidden = false;
@@ -482,17 +512,21 @@ function playLetterReveal() {
   };
 
   if (state.reducedMotion) {
-    el.letterStage.classList.add("is-revealed");
+    el.letterStage.classList.add("phase-read");
     startTyping();
     return;
   }
 
-  const revealTimer = window.setTimeout(() => {
-    el.letterStage.classList.add("is-revealed");
-  }, 860);
+  const slideTimer = window.setTimeout(() => {
+    el.letterStage.classList.add("phase-slide");
+  }, 220);
 
-  const typingTimer = window.setTimeout(startTyping, 1500);
-  state.letterRevealTimers.push(revealTimer, typingTimer);
+  const settleTimer = window.setTimeout(() => {
+    el.letterStage.classList.add("phase-read");
+  }, 1180);
+
+  const typingTimer = window.setTimeout(startTyping, 1420);
+  state.letterRevealTimers.push(slideTimer, settleTimer, typingTimer);
 }
 
 function startTypewriter() {
@@ -512,6 +546,7 @@ function startTypewriter() {
   state.typewriter.index = 0;
   state.typewriter.running = true;
   el.letterOutput.textContent = "";
+  el.letterOutput.scrollTop = 0;
 
   typeNextCharacter();
 }
@@ -540,6 +575,7 @@ function skipTypewriter() {
   }
   stopTypewriter();
   el.letterOutput.textContent = state.typewriter.text;
+  el.letterOutput.scrollTop = 0;
 }
 
 function stopTypewriter() {
@@ -561,7 +597,8 @@ function resetLetterScene() {
   el.skipTypingBtn.hidden = true;
   el.skipTypingBtn.disabled = true;
   el.letterOutput.textContent = "";
-  el.letterStage.classList.remove("is-opening", "is-revealed");
+  el.letterOutput.scrollTop = 0;
+  el.letterStage.classList.remove("phase-slide", "phase-read");
 }
 
 function getTypeDelay(char) {

@@ -316,22 +316,59 @@ p {
 
 .letter-stage {
   position: relative;
-  height: clamp(300px, 52vh, 460px);
-  margin-top: 8px;
+  height: clamp(320px, 56vh, 500px);
+  margin-top: 10px;
   overflow: visible;
+  isolation: isolate;
+}
+
+.letter-hearts-bg-lottie {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.22;
+  pointer-events: none;
+  filter: saturate(1.05);
+}
+
+.bunny-window {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  width: clamp(120px, 20vw, 170px);
+  height: clamp(92px, 15vw, 126px);
+  z-index: 5;
+  border-radius: 14px;
+  border: 1px solid rgba(231, 79, 120, 0.28);
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 10px 20px rgba(164, 58, 90, 0.16);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transition: opacity 320ms ease, transform 420ms ease;
+}
+
+.letter-stage.phase-read .bunny-window {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.letter-bunny-lottie {
+  width: 100%;
+  height: 100%;
 }
 
 .envelope {
   position: absolute;
-  left: 30%;
-  top: 64%;
+  left: 50%;
+  top: 70%;
   width: clamp(180px, 30vw, 270px);
   height: clamp(132px, 20vw, 200px);
-  translate: -50% -50%;
+  transform: translate(-50%, -50%) rotate(-2deg);
   perspective: 1000px;
   transform-style: preserve-3d;
-  transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1), scale 760ms ease, rotate 760ms ease,
-    opacity 760ms ease;
+  transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1), opacity 760ms ease;
+  z-index: 4;
 }
 
 .envelope-back {
@@ -384,35 +421,37 @@ p {
 .letter-sheet {
   position: absolute;
   left: 50%;
-  top: 14px;
+  top: 7px;
   width: min(620px, calc(100% - 20px));
-  height: calc(100% - 28px);
-  translate: -50% 86%;
+  height: calc(100% - 14px);
+  opacity: 0;
+  transform: translate(-50%, 22%) scale(0.95);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(227, 151, 175, 0.52);
   box-shadow: 0 18px 26px rgba(164, 58, 90, 0.2);
-  transition: translate 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 760ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms ease;
   z-index: 3;
 }
 
-.letter-stage.is-opening .envelope-flap {
+.letter-stage.phase-slide .envelope-flap,
+.letter-stage.phase-read .envelope-flap {
   transform: rotateX(168deg);
 }
 
-.letter-stage.is-opening .letter-sheet {
-  translate: -50% 10%;
+.letter-stage.phase-slide .letter-sheet {
+  opacity: 1;
+  transform: translate(-50%, 4%) scale(1);
 }
 
-.letter-stage.is-revealed .envelope {
-  translate: -168% -60%;
-  scale: 0.64;
-  rotate: -10deg;
+.letter-stage.phase-read .envelope {
+  transform: translate(-205%, 8%) rotate(-11deg) scale(0.66);
   opacity: 0.88;
 }
 
-.letter-stage.is-revealed .letter-sheet {
-  translate: -50% 0;
+.letter-stage.phase-read .letter-sheet {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
 }
 
 .letter-output {
@@ -526,15 +565,18 @@ p {
   }
 
   .envelope {
-    left: 28%;
-    top: 63%;
+    top: 72%;
     width: clamp(140px, 30vw, 180px);
     height: clamp(102px, 21vw, 136px);
   }
 
-  .letter-stage.is-revealed .envelope {
-    translate: -150% -64%;
-    scale: 0.6;
+  .letter-stage.phase-read .envelope {
+    transform: translate(-170%, 16%) rotate(-10deg) scale(0.64);
+  }
+
+  .bunny-window {
+    width: 110px;
+    height: 82px;
   }
 
   .modal-actions {
